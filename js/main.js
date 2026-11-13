@@ -245,13 +245,6 @@
     window.addEventListener('afterprint', function () { document.body.classList.remove('print-details'); });
 
     var T = C.travel;
-    var items = [
-      ['Travelling from outside Kirkwood', val(T.general)],
-      ['Parking', val(has(T.parking) ? T.parking : D.parking)],
-      ['Transport arrangements', val(T.transport)],
-      ['Between accommodation and venue', val(T.accommodationToVenue)]
-    ];
-    $('#travel-grid').innerHTML = items.map(function (r) { return '<div class="travel-item"><h4>' + r[0] + '</h4><p>' + r[1] + '</p></div>'; }).join('');
     var mq = has(D.mapsQuery) ? D.mapsQuery : D.venueAddress, mapBox = $('#map-embed');
     if (has(mq)) { mapBox.innerHTML = '<iframe title="Map showing ' + esc(has(D.venueName) ? D.venueName : 'the venue') + '" src="https://www.google.com/maps?q=' + encodeURIComponent(mq) + '&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>'; mapBox.hidden = false; }
     var rem = $('#travel-reminder');
