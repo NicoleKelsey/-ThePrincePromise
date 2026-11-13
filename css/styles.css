@@ -764,3 +764,6 @@ input[type="text"], select, textarea { border-radius: 4px; }
 }
 /* touch screens have no hover: always show captions */
 @media (hover: none) { .g-cap { transform: none !important; opacity: 1 !important; } }
+
+/* ---------- Safety net: if a script errors, never leave sections invisible ---------- */
+.js-failed .reveal { opacity: 1 !important; transform: none !important; }
