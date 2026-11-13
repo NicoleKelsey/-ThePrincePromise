@@ -284,16 +284,6 @@
     }).join('');
   })();
 
-  /* ---------- announcements ---------- */
-  (function ann() {
-    var list = C.announcements || [], el = $('#ann-list');
-    if (!list.length) { el.innerHTML = '<p class="center tbc">No announcements yet. Check back soon.</p>'; return; }
-    el.innerHTML = list.map(function (a) {
-      var d = fmtDate(a.date);
-      return '<article class="ann">' + (d ? '<time datetime="' + esc(a.date) + '">' + esc(d) + '</time>' : '') + '<h3>' + esc(a.title) + '</h3><p>' + esc(a.text) + '</p></article>';
-    }).join('');
-  })();
-
   /* ---------- FAQ ---------- */
   (function faq() {
     $('#faq-list').innerHTML = C.faq.map(function (f, i) {
