@@ -246,8 +246,6 @@
 
     var T = C.travel;
     var items = [
-      ['Venue address', has(D.venueAddress) ? esc(D.venueAddress) : '<span class="tbc">Venue to be confirmed</span>'],
-      ['Directions', href ? '<a class="text-link" href="' + esc(href) + '" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>' : '<span class="tbc">Directions will be added once the venue is confirmed</span>'],
       ['Travelling from outside Kirkwood', val(T.general)],
       ['Parking', val(has(T.parking) ? T.parking : D.parking)],
       ['Transport arrangements', val(T.transport)],
