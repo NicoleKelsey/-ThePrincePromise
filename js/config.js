@@ -358,11 +358,11 @@ window.WEDDING_CONFIG = {
      See README.md → "Set up RSVP". Until `endpoint` is set the form is
      visibly closed and can never claim a response was saved. */
   rsvp: {
-    endpoint: null,              // Google Apps Script web-app URL (ends in /exec)
+    endpoint: "https://script.google.com/macros/s/AKfycbw8-lK8tdYF-dSDL7zSl-ueb4Tr63ohM-1Dq0qyPpysCTq6p9N76n-PcMTVsplSwaZ34A/exec",   // Google Apps Script web-app URL (ends in /exec)
     deadline: "1 July 2027",    // e.g. "30 June 2027" - null shows "To be confirmed"
-    maxGuestsPerInvitation: 2,   // total people on one invitation, including the guest.
+    maxGuestsPerInvitation: 4,   // largest invitation; each code's own limit is enforced by the server. Total people on one invitation, including the guest.
                                  // ALSO enforced on the server (apps-script/Code.gs).
-    childrenInvited: false,      // true shows children questions
+    childrenInvited: true,       // true shows children questions
     requireInvitationCode: true, // true = guests must type the code printed on their invitation
     closedMessage: "RSVPs are not open yet. We'll announce here as soon as they are.",
   },
