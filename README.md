@@ -55,29 +55,48 @@ GitHub Pages is static: it **cannot** store RSVPs. Until you finish this, the fo
 | | |
 |---|---|
 | **Cost** | Free with any Google account |
-| **Advantages** | You own the data in a private Sheet; no secrets in the website; server-side validation, guest-limit enforcement, spam checks and duplicate handling (a repeat submission with the same name *updates* the earlier row); easy to view/export |
-| **Limitations** | Slightly slow (1–3 s); Google daily quotas (ample for ~100 guests); no automatic email notifications unless you add them (optional: Sheet → *Tools → Notification rules*); the web-app URL is public by nature, so protection is by validation/rate-limiting, not secrecy; guests can't verify who they are unless you use invitation codes |
-| **Alternatives** | Formspree / Web3Forms (simpler, but free tiers cap submissions and can't enforce your guest limits server-side) |
+| **Advantages** | You own the data in a private Sheet; no secrets in the website; every invitation has its own code and named guests, so only invited people can reply and nobody can add extras; server-side validation, spam checks and duplicate handling (a repeat reply with the same code *updates* the earlier row); easy to view/export |
+| **Limitations** | Slightly slow (1–3 s, longer on the first request); Google daily quotas (ample for ~100 guests); no automatic email notifications unless you add them (optional: Sheet → *Tools → Notification rules*); the web-app URL is public by nature, so protection is by validation/rate-limiting and hard-to-guess codes, not secrecy |
+| **Alternatives** | Formspree / Web3Forms (simpler, but free tiers cap submissions and can't check who is on each invitation) |
+
+### How guests reply
+1. The guest types the **invitation code** printed on their invitation and taps *Find my invitation*.
+2. The form shows each person named on that invitation, with *Joyfully accepts* / *Regretfully unable to attend* for each one. Nobody chooses a number of guests or types in extra names.
+3. If anyone is coming, optional dietary and allergy boxes appear. They send the RSVP.
+4. One row per invitation is saved. Replying again with the same code updates that row.
 
 ### Steps
 1. Sign in to Google and create a new **Google Sheet** (name it "Wedding RSVPs"). Keep it private - do not share it publicly.
-2. In the Sheet: **Extensions → Apps Script**. Delete the sample code and paste the whole of `apps-script/Code.gs`. Save.
-3. **Project Settings (gear icon) → Script Properties → Add**:
-   - `DEFAULT_MAX_GUESTS` = e.g. `2` (must match `maxGuestsPerInvitation` in `config.js`)
-   - `CHILDREN_INVITED` = `true` or `false` (match `childrenInvited`)
-   - `REQUIRE_CODE` = `false` (see codes below)
+2. Add a tab named exactly **Invitations**: column A = the invitation code, column B = the people on that invitation separated by semicolons (see below).
+3. **Extensions → Apps Script**. Delete the sample code and paste the whole of `apps-script/Code.gs`. Save.
+4. **Project Settings (gear icon) → Script Properties → Add** (both optional):
    - `MAX_SONGS_PER_GUEST` = `3` (song requests per name; match `songs.maxPerGuest`)
-   - `RSVP_DEADLINE_ISO` = optional, e.g. `2027-06-30T23:59:59+02:00` - the server refuses late replies
-4. **Deploy → New deployment → type: Web app**. Execute as: **Me**. Who has access: **Anyone**. Authorise when asked (Google may show an "unverified app" warning - it's your own script; choose Advanced → Continue).
-5. Copy the **Web app URL** (ends in `/exec`) and paste it into `config.js` → `rsvp.endpoint`.
-6. Open your site, submit a test RSVP, and confirm a row appears in the Sheet's `RSVPs` tab. Delete the test row.
-7. Whenever you change `Code.gs`, use **Deploy → Manage deployments → Edit → New version** (the URL stays the same).
+   - `RSVP_DEADLINE_ISO` = e.g. `2027-07-01T23:59:59+02:00` - the server refuses late replies
+5. **Deploy → New deployment → type: Web app**. Execute as: **Me**. Who has access: **Anyone**. Authorise when asked (Google may show an "unverified app" warning - it's your own script; choose Advanced → Continue).
+6. Copy the **Web app URL** (ends in `/exec`) and paste it into `config.js` → `rsvp.endpoint`.
+7. Open your site, enter one of your codes, submit a test RSVP, and confirm a row appears in the Sheet's `RSVPs` tab (it is created automatically). Delete the test row.
+8. Whenever you change `Code.gs`, use **Deploy → Manage deployments → Edit (pencil) → Version: New version → Deploy** (the URL stays the same). If you change the column layout, delete the old `RSVPs` tab first so it is recreated with the new headings.
 
-**Per-invitation limits (optional):** create a sheet tab named `Invitations` with column A = code (e.g. `SMITH24`), column B = max guests. Set `REQUIRE_CODE` = `true` and `requireInvitationCode: true` in `config.js`. Each code's own limit is then enforced **on the server**. Without codes, the single limit applies to everyone, and the server rejects any request over it.
+### The Invitations tab
+One row per invitation, no header row:
+
+| A: Code | B: People on the invitation |
+|---|---|
+| LEOPARD-K7M4 | John Leopard; Jana Leopard |
+| SMITH-Q2X9 | Pieter Smith; Anna Smith; Liam Smith; Mia Smith |
+| NAIDOO-R5T8 | Priya Naidoo |
+
+- Print only each invitation's own code on it. Use hard-to-guess codes (name plus random characters), not just a surname.
+- List children as their own names so they get their own tick-box. The number of guests is simply the number of names, so the guest limit is enforced for you.
+- Codes are not case-sensitive. Add a person or fix a spelling by editing the cell; no redeploy is needed.
+- Guests only see the names for the code they type. Delete any `TEST-` codes before invitations go out.
+
+### Reading the RSVPs tab
+Columns: Received, Updated, Invitation code, Invitation (all names), Attending, Not attending, Number attending, Dietary, Allergies, Accessibility (no longer asked, so it stays empty), Message. Invitations that have not replied simply have no row yet, so compare the `Invitations` tab against `RSVPs` to see who is outstanding.
 
 ### Privacy: public vs private
 - **Public:** everything in `config.js`, the site files, and the Apps Script *URL*.
-- **Private:** all guest responses (only in your Google Sheet), the Script Properties, and `Invitations` codes. No guest data exists in the repository. `.gitignore` blocks `*.csv`/`*.xlsx` exports from being committed.
+- **Private:** all guest responses (only in your Google Sheet), the Script Properties, and the `Invitations` codes and names. The script only reveals the names on one invitation to someone who types its code. No guest data exists in the repository. `.gitignore` blocks `*.csv`/`*.xlsx` exports from being committed.
 - `apps-script/` is excluded from the published site by the workflow. No API keys or tokens are used anywhere.
 - Guest answers live only in your private Google Sheet.
 
@@ -147,7 +166,9 @@ The site republishes automatically within a few minutes.
 | Page blank and `config.js` edited | A missing quote/comma. Open the browser console (F12) to see the error line |
 | RSVP says "not open yet" | `rsvp.endpoint` is empty or isn't the `…/exec` URL |
 | RSVP says "couldn't reach the service" | Re-deploy as Web app with access **Anyone**; paste the newest `/exec` URL |
-| RSVP says "invitation allows up to N" | Guest limit reached - raise it in both `config.js` and Script Properties |
+| RSVP says "invitation code was not recognised" | The code is not in column A of the `Invitations` tab, or has a typo / extra space. Codes are not case-sensitive |
+| "Find my invitation" shows no names | The code's row has nothing in column B. List the people separated by semicolons |
+| A guest needs another person added | Add their name to column B for that code (separate with `;`). No redeploy needed |
 | Countdown wrong | It targets `2027-09-18T00:00:00+02:00` (start of the day, SAST) - edit `wedding.startsAtIso` only if the date changes |
 
 ## Notifications
