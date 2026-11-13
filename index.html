@@ -21,10 +21,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=20261113">
-  <script src="js/config.js?v=20261113"></script>
+  <link rel="stylesheet" href="css/styles.css?v=20261113b">
+  <script src="js/config.js?v=20261113b"></script>
   <script>
     document.documentElement.classList.add('js');
+    // Safety net: if any script fails (e.g. a stale cached file), show every section instead of leaving the page blank.
+    window.addEventListener('error', function () { document.documentElement.classList.add('js-failed'); });
     (function () {
       var cfg = (window.WEDDING_CONFIG && window.WEDDING_CONFIG.intro) || {};
       var seen = false, calm = false, off = cfg.enabled === false, always = cfg.replay === 'always';
@@ -283,10 +285,10 @@
 
   <noscript><p style="text-align:center;padding:2rem">This website needs JavaScript to display the wedding details. Please enable it and reload.</p></noscript>
 
-  <script src="js/main.js?v=20261113"></script>
-  <script src="js/rsvp.js?v=20261113"></script>
-  <script src="js/songs.js?v=20261113"></script>
-  <script src="js/magic.js?v=20261113"></script>
-  <script src="js/intro.js?v=20261113"></script>
+  <script src="js/main.js?v=20261113b"></script>
+  <script src="js/rsvp.js?v=20261113b"></script>
+  <script src="js/songs.js?v=20261113b"></script>
+  <script src="js/magic.js?v=20261113b"></script>
+  <script src="js/intro.js?v=20261113b"></script>
 </body>
 </html>
