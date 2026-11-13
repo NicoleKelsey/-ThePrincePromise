@@ -31,7 +31,7 @@
     '<label class="radio"><input type="radio" name="attending" value="no"> <span>Regretfully unable to attend</span></label></div><p class="err" id="e-attending" hidden></p></div>' +
 
     '<div id="yes-fields" hidden>' +
-    (MAX > 1 ? '<div class="field"><label for="f-size">Number of people in your party <span class="req">*</span></label><select id="f-size" name="partySize">' + sizeOpts + '</select><p class="hint">Your invitation includes up to ' + MAX + (MAX === 1 ? ' guest' : ' guests') + ' (including you).</p><p class="err" id="e-size" hidden></p></div>' : '<input type="hidden" id="f-size" value="1">') +
+    (MAX > 1 ? '<div class="field"><label for="f-size">Number of people in your party <span class="req">*</span></label><select id="f-size" name="partySize">' + sizeOpts + '</select><p class="hint">Your invitation states how many guests are included (including you).</p><p class="err" id="e-size" hidden></p></div>' : '<input type="hidden" id="f-size" value="1">') +
     '<div id="extra-wrap" hidden><div class="field"><span class="label">Names of additional guests <span class="req">*</span></span><div id="extra-names"></div><p class="err" id="e-extra" hidden></p></div></div>' +
     (R.childrenInvited && MAX > 1 ? '<div class="field" id="kids-wrap" hidden><label for="f-kids">How many of your party are children?</label><select id="f-kids" name="children"></select>' +
       '<div id="kids-details" hidden><label for="f-kidsinfo">Children\'s names and ages</label><textarea id="f-kidsinfo" name="childrenDetails" rows="2" maxlength="300"></textarea></div></div>' : '') +
