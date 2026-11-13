@@ -34,7 +34,6 @@
     '<div id="yes-fields" hidden>' +
     '<div class="field"><label for="f-diet">Dietary requirements <span class="opt">(optional)</span></label><textarea id="f-diet" name="dietary" rows="2" maxlength="300" placeholder="e.g. vegetarian, halal (please say who)"></textarea></div>' +
     '<div class="field"><label for="f-allergy">Food allergies <span class="opt">(optional)</span></label><textarea id="f-allergy" name="allergies" rows="2" maxlength="300"></textarea></div>' +
-    '<div class="field"><label for="f-access">Accessibility or special assistance <span class="opt">(optional)</span></label><textarea id="f-access" name="accessibility" rows="2" maxlength="300"></textarea></div>' +
     '</div>' +
     '<div class="field"><label for="f-msg">Message to Nicole &amp; Ryan <span class="opt">(optional)</span></label><textarea id="f-msg" name="message" rows="3" maxlength="600"></textarea></div>' +
     // Honeypot: hidden from people, irresistible to bots.
@@ -123,7 +122,6 @@
       attendance: answers(),
       dietary: g('f-diet'),
       allergies: g('f-allergy'),
-      accessibility: g('f-access'),
       message: g('f-msg'),
       website: form.querySelector('input[name="website"]').value, // honeypot
       elapsedMs: Date.now() - openedAt
